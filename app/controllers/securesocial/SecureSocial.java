@@ -207,7 +207,8 @@ public class SecureSocial extends Controller {
             flash.keep(ORIGINAL_URL); 
             login();
         }
-        redirect( originalUrl != null ? originalUrl : ROOT);
+        redirect( (originalUrl == null || originalUrl.equals("/")) ? ROOT : originalUrl);
+    
     }
 
     /**
