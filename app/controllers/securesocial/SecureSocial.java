@@ -35,7 +35,7 @@ public class SecureSocial extends Controller {
     private static final String NETWORK_COOKIE = "securesocial.network";
     private static final String ORIGINAL_URL = "originalUrl";
     private static final String GET = "GET";
-    private static final String ROOT = "/auth/success";
+    private static final String ROOT = "/login/success";
     static final String USER = "user";
     private static final String ERROR = "error";
     private static final String SECURESOCIAL_AUTH_ERROR = "securesocial.authError";
@@ -51,7 +51,7 @@ public class SecureSocial extends Controller {
         final UserId userId = getUserId();
 
         if ( userId == null ) {
-            final String originalUrl = request.method.equals(GET) ? request.url : ROOT;
+            final String originalUrl = ROOT;
             flash.put(ORIGINAL_URL, originalUrl);
             login();
         } else {
@@ -207,7 +207,7 @@ public class SecureSocial extends Controller {
             flash.keep(ORIGINAL_URL); 
             login();
         }
-        redirect( (originalUrl == null || originalUrl.equals("/")) ? ROOT : originalUrl);
+        redirect(ROOT);
     
     }
 
