@@ -22,6 +22,7 @@ import play.libs.OAuth;
 import play.mvc.Before;
 import play.mvc.Controller;
 import securesocial.provider.*;
+import com.google.gson.JsonObject;
 
 import java.util.Collection;
 
@@ -45,7 +46,7 @@ public class SecureSocial extends Controller {
     /**
      * Checks if there is a user logged in and redirects to the login page if not.
      */
-    @Before(unless={"login", "authenticate", "logout"})
+    @Before(unless={"login", "authenticate", "logout", "unauthenticated"})
     static void checkAccess() throws Throwable
     {
         final UserId userId = getUserId();
@@ -53,14 +54,14 @@ public class SecureSocial extends Controller {
         if ( userId == null ) {
             final String originalUrl = ROOT;
             flash.put(ORIGINAL_URL, originalUrl);
-            login();
+            unauthenticated();
         } else {
             final SocialUser user = loadCurrentUser(userId);
             if ( user == null ) {
                // the user had the cookies but the UserService can't find it ...
                // it must have been erased, redirect to login again.
                clearUserId();
-               login();
+               unauthenticated();
            }
         }
     }
@@ -164,6 +165,13 @@ public class SecureSocial extends Controller {
         boolean userPassEnabled = ProviderRegistry.get(ProviderType.userpass) != null;
         render(providers, userPassEnabled);
 
+    }
+
+    public static void unauthenticated(){
+        JsonObject result = new JsonObject();
+        result.addProperty("response", "unauthorised");
+        response.status = 401;
+        renderJSON(result.toString());
     }
 
     /**

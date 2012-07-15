@@ -15,6 +15,7 @@ GET     /activate/{uuid}        securesocial.UsernamePasswordController.activate
 #
 # Secure Social Controller routes
 #
+GET     /unauthenticated        securesocial.SecureSocial.unauthenticated
 GET     /login                  securesocial.SecureSocial.login
 GET     /logout                 securesocial.SecureSocial.logout
 GET     /{type}                 securesocial.SecureSocial.authenticate
